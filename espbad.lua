@@ -2,64 +2,32 @@ _G.ESPEnabled = true
 
 local lplr = game.Players.LocalPlayer
 local camera = workspace.CurrentCamera
-local worldToViewportPoint = camera.worldToViewportPoint
-
-local HeadOff = Vector3.new(0, 0.5, 0)
-local LegOff = Vector3.new(0, 3, 0)
 
 local function createBox(player)
-    local BoxOutline = Drawing.new("Square")
-    BoxOutline.Visible = false
-    BoxOutline.Color = Color3.new(0, 0, 0)
-    BoxOutline.Thickness = 3
-    BoxOutline.Transparency = 1
-    BoxOutline.Filled = false
-
-    local Box = Drawing.new("Square")
-    Box.Visible = false
-    Box.Color = Color3.new(1, 1, 1)
-    Box.Thickness = 1
-    Box.Transparency = 1
-    Box.Filled = false
+    local box = Drawing.new("Square")
+    box.Visible = false
+    box.Color = Color3.new(1, 1, 1)
+    box.Thickness = 1
+    box.Transparency = 1
+    box.Filled = false
 
     local function updateBox()
         if _G.ESPEnabled then
             if player.Character and player.Character:FindFirstChild("Humanoid") and player.Character:FindFirstChild("HumanoidRootPart") and player ~= lplr and player.Character.Humanoid.Health > 0 then
                 local Vector, onScreen = camera:worldToViewportPoint(player.Character.HumanoidRootPart.Position)
 
-                local RootPart = player.Character.HumanoidRootPart
-                local Head = player.Character.Head
-                local RootPosition, RootVis = camera:worldToViewportPoint(RootPart.Position)
-                local HeadPosition = camera:worldToViewportPoint(Head.Position + HeadOff)
-                local LegPosition = camera:worldToViewportPoint(RootPart.Position - LegOff)
-
                 if onScreen then
-                    BoxOutline.Size = Vector2.new(1000 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
-                    BoxOutline.Visible = true
-
-                    Box.Size = Vector2.new(1000 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
-                    Box.Visible = true
-
-                    if player.TeamColor == lplr.TeamColor then
-                        BoxOutline.Visible = false
-                        Box.Visible = false
-                    else
-                        BoxOutline.Visible = true
-                        Box.Visible = true
-                    end
+                    box.Size = Vector2.new(1000 / Vector.Z, 1000 / Vector.Z)
+                    box.Position = Vector2.new(Vector.X, Vector.Y)
+                    box.Visible = true
                 else
-                    BoxOutline.Visible = false
-                    Box.Visible = false
+                    box.Visible = false
                 end
             else
-                BoxOutline.Visible = false
-                Box.Visible = false
+                box.Visible = false
             end
         else
-            BoxOutline.Visible = false
-            Box.Visible = false
+            box.Visible = false
         end
     end
 
