@@ -1,21 +1,18 @@
--- ESP Script with Team Check for Arsenal
+-- ESP Script for Arsenal
 
--- Create a local function to get the player's team
-local function getTeam(player)
+-- Create a local function to get the player's team color
+local function getTeamColor(player)
     local character = player.Character
     if character then
-        local team = character:FindFirstChild("Team")
-        if team then
-            return team.Name
-        end
+        return character.TeamColor
     end
     return nil
 end
 
 -- Create a local function to draw ESP boxes
 local function drawESP(player)
-    local team = getTeam(player)
-    if team and team ~= game.Players.LocalPlayer.Team.Name then
+    local teamColor = getTeamColor(player)
+    if teamColor and teamColor ~= game.Players.LocalPlayer.Character.TeamColor then
         local character = player.Character
         if character then
             local head = character:FindFirstChild("Head")
